@@ -3,63 +3,64 @@ import {
   MaxAllowanceTransferAmount,
   PERMIT2_ADDRESS,
   type PermitSingle,
-} from "@uniswap/permit2-sdk";
-import ms from "ms";
-import { useMemo, useState } from "react";
-import type { Hex } from "viem";
-import { parseErc6492Signature } from "viem/experimental";
-import { useAccount, useReadContract, useSignTypedData } from "wagmi";
-import { useWriteContracts } from "wagmi/experimental";
+} from '@uniswap/permit2-sdk';
+import ms from 'ms';
+import { useMemo, useState } from 'react';
+import type { Hex } from 'viem';
+import { parseErc6492Signature } from 'viem/experimental';
+import { useAccount, useReadContract, useSignTypedData } from 'wagmi';
+import { useWriteContracts } from 'wagmi/experimental';
+import { Button } from 'flowbite-react';
 
 const abi = [
   {
-    type: "function",
+    type: 'function',
     inputs: [
-      { name: "owner", internalType: "address", type: "address" },
+      { name: 'owner', internalType: 'address', type: 'address' },
       {
-        name: "permitSingle",
-        internalType: "struct IAllowanceTransfer.PermitSingle",
-        type: "tuple",
+        name: 'permitSingle',
+        internalType: 'struct IAllowanceTransfer.PermitSingle',
+        type: 'tuple',
         components: [
           {
-            name: "details",
-            internalType: "struct IAllowanceTransfer.PermitDetails",
-            type: "tuple",
+            name: 'details',
+            internalType: 'struct IAllowanceTransfer.PermitDetails',
+            type: 'tuple',
             components: [
-              { name: "token", internalType: "address", type: "address" },
-              { name: "amount", internalType: "uint160", type: "uint160" },
-              { name: "expiration", internalType: "uint48", type: "uint48" },
-              { name: "nonce", internalType: "uint48", type: "uint48" },
+              { name: 'token', internalType: 'address', type: 'address' },
+              { name: 'amount', internalType: 'uint160', type: 'uint160' },
+              { name: 'expiration', internalType: 'uint48', type: 'uint48' },
+              { name: 'nonce', internalType: 'uint48', type: 'uint48' },
             ],
           },
-          { name: "spender", internalType: "address", type: "address" },
-          { name: "sigDeadline", internalType: "uint256", type: "uint256" },
+          { name: 'spender', internalType: 'address', type: 'address' },
+          { name: 'sigDeadline', internalType: 'uint256', type: 'uint256' },
         ],
       },
-      { name: "signature", internalType: "bytes", type: "bytes" },
+      { name: 'signature', internalType: 'bytes', type: 'bytes' },
     ],
-    name: "permit",
+    name: 'permit',
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
   {
-    type: "function",
+    type: 'function',
     inputs: [
-      { name: "", internalType: "address", type: "address" },
-      { name: "", internalType: "address", type: "address" },
-      { name: "", internalType: "address", type: "address" },
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'address', type: 'address' },
     ],
-    name: "allowance",
+    name: 'allowance',
     outputs: [
-      { name: "amount", internalType: "uint160", type: "uint160" },
-      { name: "expiration", internalType: "uint48", type: "uint48" },
-      { name: "nonce", internalType: "uint48", type: "uint48" },
+      { name: 'amount', internalType: 'uint160', type: 'uint160' },
+      { name: 'expiration', internalType: 'uint48', type: 'uint48' },
+      { name: 'nonce', internalType: 'uint48', type: 'uint48' },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
 ] as const;
 
-const allowanceTransferContract = "0x000000000022D473030F116dDEE9F6B43aC78BA3";
+const allowanceTransferContract = '0x000000000022D473030F116dDEE9F6B43aC78BA3';
 
 interface Permit extends PermitSingle {
   sigDeadline: number;
@@ -74,14 +75,14 @@ const PERMIT_SIG_EXPIRATION = ms(`30m`);
 
 // Example of parsing ERC6492 signatures for onchain use
 export function Permit2({ chainId }: { chainId: number }) {
-  const dummyToken = "0x0000000000000000000000000000000000000B0b";
-  const dummySpender = "0x0000000000000000000000000000000000000B0b";
+  const dummyToken = '0x0000000000000000000000000000000000000B0b';
+  const dummySpender = '0x0000000000000000000000000000000000000B0b';
   const account = useAccount();
 
   const { data: allowance } = useReadContract({
     abi,
     address: allowanceTransferContract,
-    functionName: "allowance",
+    functionName: 'allowance',
     args: [account.address!, dummyToken, dummySpender],
   });
 
@@ -120,11 +121,11 @@ export function Permit2({ chainId }: { chainId: number }) {
   const { writeContracts } = useWriteContracts();
 
   return (
-    <div>
+    <div className="my-2">
       <h2>Permit2 Example</h2>
       <p>Code sample for parsing ERC-6492 signatures for onchain use </p>
       {
-        <button
+        <Button
           onClick={() => {
             if (!permitData) return;
 
@@ -132,22 +133,22 @@ export function Permit2({ chainId }: { chainId: number }) {
               domain: permitData.domain as Record<string, unknown>,
               types: permitData?.types,
               message: permitData.values as any,
-              primaryType: "PermitSingle",
+              primaryType: 'PermitSingle',
             });
           }}
         >
           Sign Permit
-        </button>
+        </Button>
       }
       {signature && (
-        <button
+        <Button
           onClick={() => {
             writeContracts({
               contracts: [
                 {
-                  address: "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+                  address: '0x000000000022D473030F116dDEE9F6B43aC78BA3',
                   abi,
-                  functionName: "permit",
+                  functionName: 'permit',
                   args: [account.address, permitData!.values, parsedSignature],
                 },
               ],
@@ -155,7 +156,7 @@ export function Permit2({ chainId }: { chainId: number }) {
           }}
         >
           Submit Onchain
-        </button>
+        </Button>
       )}
     </div>
   );

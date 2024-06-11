@@ -1,23 +1,24 @@
-import { useCallback, useEffect, useState } from "react";
-import type { Address, Hex } from "viem";
-import { useAccount, usePublicClient, useSignTypedData } from "wagmi";
+import { useCallback, useEffect, useState } from 'react';
+import type { Address, Hex } from 'viem';
+import { useAccount, usePublicClient, useSignTypedData } from 'wagmi';
+import { Button } from 'flowbite-react';
 
 export const domain = {
-  name: "Ether Mail",
-  version: "1",
+  name: 'Ether Mail',
+  version: '1',
   chainId: 1,
-  verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+  verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
 } as const;
 
 export const types = {
   Person: [
-    { name: "name", type: "string" },
-    { name: "wallet", type: "address" },
+    { name: 'name', type: 'string' },
+    { name: 'wallet', type: 'address' },
   ],
   Mail: [
-    { name: "from", type: "Person" },
-    { name: "to", type: "Person" },
-    { name: "contents", type: "string" },
+    { name: 'from', type: 'Person' },
+    { name: 'to', type: 'Person' },
+    { name: 'contents', type: 'string' },
   ],
 } as const;
 
@@ -30,14 +31,14 @@ export function TypedSign() {
   });
   const message = {
     from: {
-      name: "Cow",
-      wallet: "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826" as Address,
+      name: 'Cow',
+      wallet: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826' as Address,
     },
     to: {
-      name: "Bob",
-      wallet: "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB" as Address,
+      name: 'Bob',
+      wallet: '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB' as Address,
     },
-    contents: "Hello, Bob!",
+    contents: 'Hello, Bob!',
   };
 
   const [valid, setValid] = useState<boolean | undefined>(undefined);
@@ -50,7 +51,7 @@ export function TypedSign() {
         address: account.address,
         types,
         domain,
-        primaryType: "Mail",
+        primaryType: 'Mail',
         message,
         signature,
       })
@@ -62,15 +63,15 @@ export function TypedSign() {
   }, [signature, account]);
 
   return (
-    <div>
+    <div className="my-2">
       <h2>Sign Typed Data</h2>
-      <button
+      <Button
         onClick={() =>
-          signTypedData({ domain, types, message, primaryType: "Mail" })
+          signTypedData({ domain, types, message, primaryType: 'Mail' })
         }
       >
         Sign
-      </button>
+      </Button>
       <p>{}</p>
       {signature && <p>Signature: {signature}</p>}
       {valid != undefined && <p> Is valid: {valid.toString()} </p>}

@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   background-color: #181818;
   color: rgba(255, 255, 255, 0.87);
@@ -18,4 +22,9 @@
     background-color: #f8f8f8;
     color: #181818;
   }
+}
+
+h2 {
+  font-size: 1.2rem;
+  font-weight: bold;
 }

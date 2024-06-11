@@ -1,8 +1,9 @@
-import { useAccount } from "wagmi";
-import { useCapabilities, useWriteContracts } from "wagmi/experimental";
-import { useMemo, useState } from "react";
-import { CallStatus } from "./CallStatus";
-import { myNFTABI, myNFTAddress } from "@/ABIs/myNFT";
+import { useAccount } from 'wagmi';
+import { useCapabilities, useWriteContracts } from 'wagmi/experimental';
+import { useMemo, useState } from 'react';
+import { Button } from 'flowbite-react';
+import { CallStatus } from './CallStatus';
+import { myNFTABI, myNFTAddress } from '@/ABIs/myNFT';
 
 export function TransactWithPaymaster() {
   const account = useAccount();
@@ -17,29 +18,31 @@ export function TransactWithPaymaster() {
     if (!availableCapabilities || !account.chainId) return;
     const capabilitiesForChain = availableCapabilities[account.chainId];
     if (
-      capabilitiesForChain["paymasterService"] &&
-      capabilitiesForChain["paymasterService"].supported
+      capabilitiesForChain['paymasterService'] &&
+      capabilitiesForChain['paymasterService'].supported
     ) {
       return {
         paymasterService: {
-          url: process.env.PAYMASTER_PROXY_SERVER_URL || `${document.location.origin}/api/paymaster`,
+          url:
+            process.env.PAYMASTER_PROXY_SERVER_URL ||
+            `${document.location.origin}/api/paymaster`,
         },
       };
     }
   }, [availableCapabilities]);
 
   return (
-    <div>
+    <div className="my-2">
       <h2>Transact With Paymaster</h2>
       <div>
-        <button
+        <Button
           onClick={() => {
             writeContracts({
               contracts: [
                 {
                   address: myNFTAddress,
                   abi: myNFTABI,
-                  functionName: "safeMint",
+                  functionName: 'safeMint',
                   args: [account.address],
                 },
               ],
@@ -48,7 +51,7 @@ export function TransactWithPaymaster() {
           }}
         >
           Mint
-        </button>
+        </Button>
         {id && <CallStatus id={id} />}
       </div>
     </div>

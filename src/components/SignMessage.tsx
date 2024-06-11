@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import type { Hex } from "viem";
-import { useAccount, usePublicClient, useSignMessage } from "wagmi";
-import { SiweMessage } from "siwe";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { Hex } from 'viem';
+import { useAccount, usePublicClient, useSignMessage } from 'wagmi';
+import { SiweMessage } from 'siwe';
+import { Button } from 'flowbite-react';
 
 export function SignMessage() {
   const account = useAccount();
@@ -16,9 +17,9 @@ export function SignMessage() {
       address: account.address,
       chainId: account.chainId,
       uri: document.location.origin,
-      version: "1",
-      statement: "Smart Wallet SIWE Example",
-      nonce: "12345678",
+      version: '1',
+      statement: 'Smart Wallet SIWE Example',
+      nonce: '12345678',
     });
   }, []);
 
@@ -41,13 +42,13 @@ export function SignMessage() {
   }, [signature, account]);
 
   return (
-    <div>
+    <div className="my-2">
       <h2>Sign Message (Sign In with Ethereum)</h2>
-      <button
+      <Button
         onClick={() => signMessage({ message: message.prepareMessage() })}
       >
         Sign
-      </button>
+      </Button>
       <p>{}</p>
       {signature && <p>Signature: {signature}</p>}
       {valid != undefined && <p> Is valid: {valid.toString()} </p>}

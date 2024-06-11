@@ -1,8 +1,9 @@
-import { useAccount } from "wagmi";
-import { useWriteContracts } from "wagmi/experimental";
-import { useState } from "react";
-import { CallStatus } from "./CallStatus";
-import { myNFTABI, myNFTAddress } from "@/ABIs/myNFT";
+import { useAccount } from 'wagmi';
+import { useWriteContracts } from 'wagmi/experimental';
+import { useState } from 'react';
+import { Button } from 'flowbite-react';
+import { CallStatus } from './CallStatus';
+import { myNFTABI, myNFTAddress } from '@/ABIs/myNFT';
 
 // example batch transaction, making two mint NFT calls
 export function Transact() {
@@ -13,10 +14,10 @@ export function Transact() {
   });
 
   return (
-    <div>
+    <div className="my-2">
       <h2>Transact</h2>
       <div>
-        <button
+        <Button
           id="mint-button"
           onClick={() => {
             writeContracts({
@@ -24,13 +25,13 @@ export function Transact() {
                 {
                   address: myNFTAddress,
                   abi: myNFTABI,
-                  functionName: "safeMint",
+                  functionName: 'safeMint',
                   args: [account.address],
                 },
                 {
                   address: myNFTAddress,
                   abi: myNFTABI,
-                  functionName: "safeMint",
+                  functionName: 'safeMint',
                   args: [account.address],
                 },
               ],
@@ -38,7 +39,7 @@ export function Transact() {
           }}
         >
           Mint
-        </button>
+        </Button>
         {id && <CallStatus id={id} />}
       </div>
     </div>
