@@ -1,6 +1,6 @@
 'use client';
 
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { useAccount, useConnect } from 'wagmi';
 import { Navbar } from 'flowbite-react';
 import { ConnectKitButton } from 'connectkit';
 import { Capabilities } from '@/components/Capabilities';
@@ -10,20 +10,9 @@ import { TypedSign } from '@/components/TypedSign';
 import { Permit2 } from '@/components/Permit2';
 import { TransactWithPaymaster } from '@/components/TransactWithPaymaster';
 
-const abi = [
-  {
-    stateMutability: 'nonpayable',
-    type: 'function',
-    inputs: [{ name: 'to', type: 'address' }],
-    name: 'safeMint',
-    outputs: [],
-  },
-] as const;
-
 function App() {
   const account = useAccount();
-  const { connectors, connect, status, error } = useConnect();
-  const { disconnect } = useDisconnect();
+  const { status, error } = useConnect();
 
   return (
     <>
