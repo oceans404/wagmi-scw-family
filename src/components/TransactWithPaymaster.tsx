@@ -29,7 +29,7 @@ export function TransactWithPaymaster() {
         },
       };
     }
-  }, [availableCapabilities]);
+  }, [availableCapabilities, account.chainId]);
 
   return (
     <div className="my-2">
