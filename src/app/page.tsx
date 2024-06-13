@@ -9,6 +9,7 @@ import { SignMessage } from '@/components/SignMessage';
 import { TypedSign } from '@/components/TypedSign';
 import { Permit2 } from '@/components/Permit2';
 import { TransactWithPaymaster } from '@/components/TransactWithPaymaster';
+import { ReadStoredDays } from '@/components/ReadStoredDays';
 
 function App() {
   const account = useAccount();
@@ -21,7 +22,8 @@ function App() {
         <ConnectKitButton />
       </Navbar>
       <div className="container mx-auto">
-        <div className="my-2">
+        chainId: {account.chainId}
+        {/* <div className="my-2">
           <h2>Account</h2>
           <div>
             status: {account.status}
@@ -38,14 +40,15 @@ function App() {
           <h2>Connection status</h2>
           <div>{status}</div>
           <div>{error?.message}</div>
-        </div>
+        </div> */}
         {account.address && (
           <div className="my-2">
             <Transact />
             <TransactWithPaymaster />
-            <SignMessage />
+            <ReadStoredDays />
+            {/* <SignMessage />
             <TypedSign />
-            <Permit2 chainId={account.chainId!} />
+            <Permit2 chainId={account.chainId!} /> */}
           </div>
         )}
       </div>
